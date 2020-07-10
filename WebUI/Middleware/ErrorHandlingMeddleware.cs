@@ -6,7 +6,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace API.Middleware
+namespace WebUI.Middleware
 {
     public class ErrorHandlingMeddleware
     {

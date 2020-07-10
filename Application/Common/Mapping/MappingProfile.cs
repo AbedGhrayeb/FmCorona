@@ -9,21 +9,20 @@ namespace Application.MappingProfile
     {
         public MappingProfile()
         {
-            CreateMap<AppUser, UserDto>();
+            CreateMap<AppUser, UserDto>()
+                 .ForMember(dest => dest.DateOfBirth, opts => opts.MapFrom(src => src.DateOfBirth.ToShortDateString()));
 
-            CreateMap<AppUser, UserDto>();
 
             CreateMap<GoogleUserInfo, AppUser>()
-                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.GivenName))
-                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.FamilyName))
+                .ForMember(dest => dest.FullName, opts => opts.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
 
             CreateMap<FacebookUserInfoResult, AppUser>()
-                .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.FirstName))
-                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.FullName, opts => opts.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Id));
+
 
         }
 

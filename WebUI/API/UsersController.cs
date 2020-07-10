@@ -1,6 +1,7 @@
 ﻿using Application.Identity;
 using Application.Identity.Commands;
 using Application.Identity.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace WebUI.API
         [ProducesDefaultResponseType]
         public async Task<TokenResponse> Login(Login.Command command)
         {
-            return await Mediator.Send(command);     
+            return await Mediator.Send(command);
         }
 
         [AllowAnonymous]
@@ -32,13 +33,43 @@ namespace WebUI.API
             return await Mediator.Send(command);
         }
 
+        [AllowAnonymous]
+        [Consumes("application/json")]
+        [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<TokenResponse> Regester(Register.RegisterCommand command)
+        {
+            return await Mediator.Send(command);
+        } 
+        
+        [Consumes("application/json")]
+        [HttpPut()]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<UserDto> EditProfile(EditUser.EditUserCommand command)
+        {
+            return await Mediator.Send(command);
+        } 
+        [Consumes("application/json")]
+        [HttpPost("change_password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<Unit> ChangePassword(ChangePassword.ChangePasswordCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<UserDto>> GetProfile()
         {
-            return await Mediator.Send(new Profile.GetProfile());
+            return await Mediator.Send(new CurrentUser.CurrentUserQuery());
         }
 
     }

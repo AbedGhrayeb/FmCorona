@@ -1,4 +1,3 @@
-using API.Middleware;
 using Application.Identity.Queries;
 using Application.Interfaces;
 using Application.MappingProfile;
@@ -23,6 +22,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WebUI.Middleware;
 using WebUI.Services;
 
 namespace WebUI
@@ -58,30 +58,21 @@ namespace WebUI
             });
             //add Ideintity
 
-
-
-            var builder = services.AddIdentityCore<AppUser>(opt =>
-            {
-                opt.Password.RequiredLength = 6;
-                opt.Password.RequireLowercase = false;
-                opt.Password.RequireUppercase = false;
-                opt.Password.RequireNonAlphanumeric = false;
-
-            });
-            var IdentityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            var builder = services.AddDefaultIdentity<AppUser>();
+            var IdentityBuilder = new IdentityBuilder(builder.UserType, builder.Services)
+            .AddRoles<IdentityRole>();
             IdentityBuilder.AddEntityFrameworkStores<DataContext>();
             IdentityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
-            // add mediarR
-            services.AddMediatR(typeof(Users.Handler).Assembly);
-
-           // add automapper config
+            //add mediarR
+            services.AddMediatR(typeof(CurrentUser.Handler).Assembly);
+            //add automapper config
             var mappingConfig = new MapperConfiguration(map =>
                  map.AddProfile(new MappingProfile()));
             services.AddSingleton(mappingConfig.CreateMapper());
 
             services.AddScoped<IJwtGenerator, JwtJenerator>();
-            services.AddScoped<ICurrentUser, CurrentUser>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             //token
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("7592d6c3-fe20-488b-8761-1f5fe317a96c"));
@@ -102,11 +93,11 @@ namespace WebUI
 
             services.AddSwaggerGen(setupAction =>
             {
-                setupAction.SwaggerDoc("Corona", new OpenApiInfo
+                setupAction.SwaggerDoc("SawaAPI", new OpenApiInfo
                 {
 
-                    Description = "Use this API to access fmcorona App",
-                    Title = "Fm-Corona API",
+                    Description = "Use this API to access Sawa App",
+                    Title = "Sawa API",
                     Version = "v1.0",
                     Contact = new OpenApiContact
                     {
@@ -144,26 +135,26 @@ namespace WebUI
             services.AddHttpClient();
             services.AddSingleton<IExternalLoginService, ExternalLoginService>();
 
-            services.AddControllers(
-            option =>
+            services.AddAuthorization();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+            services.AddControllers(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser().Build();
-                option.Filters.Add(new AuthorizeFilter(policy));
+                options.Filters.Add(new AuthorizeFilter(policy));
             });
-
- 
-            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            //,UserManager<AppUser> userManager,RoleManager<IdentityRole> roleManager)
         {
-            app.UseMiddleware<ErrorHandlingMeddleware>();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -171,15 +162,16 @@ namespace WebUI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 // app.UseHsts();
             }
+            app.UseMiddleware<ErrorHandlingMeddleware>();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSwagger();
             app.UseRouting();
 
             app.UseSwaggerUI(setupAction =>
             {
-                setupAction.SwaggerEndpoint("/swagger/Corona/swagger.json", "Fmcorona API");
+                setupAction.SwaggerEndpoint("/swagger/SawaAPI/swagger.json", "Sawa API");
                 setupAction.RoutePrefix = "swagger";
                 setupAction.DefaultModelExpandDepth(2);
                 setupAction.DefaultModelRendering(ModelRendering.Model);
@@ -194,7 +186,10 @@ namespace WebUI
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+
             });
+            //Seed.SeedData(roleManager, userManager).Wait();
         }
     }
 }

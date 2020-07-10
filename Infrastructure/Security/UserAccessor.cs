@@ -4,9 +4,9 @@ using System.Security.Claims;
 
 namespace Infrastructure.Security
 {
-    public class CurrentUser : ICurrentUser
+    public class UserAccessor : IUserAccessor
     {
-        public CurrentUser(IHttpContextAccessor httpContextAccessor)
+        public UserAccessor(IHttpContextAccessor httpContextAccessor)
         {
             Username = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         }

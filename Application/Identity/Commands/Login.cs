@@ -22,7 +22,7 @@ namespace Application.Identity.Commands
             public string Password { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command,TokenResponse>
+        public class Handler : IRequestHandler<Command, TokenResponse>
         {
             private readonly UserManager<AppUser> _userManager;
             private readonly SignInManager<AppUser> _signInManager;
@@ -30,7 +30,7 @@ namespace Application.Identity.Commands
             private readonly IMapper _mapper;
 
             public Handler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-                IJwtGenerator jwtGenerator,IMapper mapper)
+                IJwtGenerator jwtGenerator, IMapper mapper)
             {
                 _userManager = userManager;
                 _signInManager = signInManager;
@@ -40,11 +40,11 @@ namespace Application.Identity.Commands
             public async Task<TokenResponse> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _userManager.FindByEmailAsync(request.Email);
-                if (user==null)
+                if (user == null)
                 {
                     throw new RestException(HttpStatusCode.BadRequest, new { msg = "خطأ في اسم المستخدم أو كلمة المرور" });
                 }
-                var result =await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+                var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
                 if (result.Succeeded)
                 {
                     var token = _jwtGenerator.CreateToken(user);
@@ -54,9 +54,9 @@ namespace Application.Identity.Commands
 
                     }
                     var userDto = _mapper.Map<UserDto>(user);
-                    return new TokenResponse(token,userDto);
+                    return new TokenResponse(token, userDto);
                 }
-                throw new RestException(HttpStatusCode.BadRequest,new{msg= "خطأ في اسم المستخدم أو كلمة المرور" });
+                throw new RestException(HttpStatusCode.BadRequest, new { msg = "خطأ في اسم المستخدم أو كلمة المرور" });
 
             }
         }

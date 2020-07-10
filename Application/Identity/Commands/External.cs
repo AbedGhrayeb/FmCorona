@@ -18,7 +18,7 @@ namespace Application.Identity.Commands
         public class Commands : IRequest<TokenResponse>
         {
             [Required]
-            public string Provider{ get; set; }
+            public string Provider { get; set; }
             [Required]
             public string AccessToken { get; set; }
         }
@@ -31,7 +31,7 @@ namespace Application.Identity.Commands
             private readonly IMapper _mapper;
 
             public Handler(IExternalLoginService externalLogin, UserManager<AppUser> userManager,
-                 IJwtGenerator jwtGenerator,DataContext context,IMapper mapper)
+                 IJwtGenerator jwtGenerator, DataContext context, IMapper mapper)
             {
                 _externalLogin = externalLogin;
                 _userManager = userManager;
@@ -62,14 +62,14 @@ namespace Application.Identity.Commands
                         }
                         user = _mapper.Map<AppUser>(userInfo);
 
-                     
+
                         var result = await _userManager.CreateAsync(user);
                         if (result.Succeeded)
                         {
                             var externalLogin = new ExternalLogin
                             {
                                 ProviderId = userInfo.Sub,
-                                ProviderName="Google",
+                                ProviderName = "Google",
                                 User = user
                             };
                             _context.ExternalLogins.Add(externalLogin);
@@ -85,7 +85,7 @@ namespace Application.Identity.Commands
 
                             }
                             var userDto = _mapper.Map<UserDto>(user);
-                            return new TokenResponse(token,userDto);
+                            return new TokenResponse(token, userDto);
                         }
                         throw new RestException(HttpStatusCode.BadRequest, new { msg = "Proplem to save user" });
                     }
@@ -96,7 +96,7 @@ namespace Application.Identity.Commands
                         return new TokenResponse(_jwtGenerator.CreateToken(externalUser.User), userDto);
                     }
                 }
-                
+
                 else if (request.Provider.Equals("facebook"))
                 {
                     var userInfo = await _externalLogin.GetFacebookInfoasync(request.AccessToken);
@@ -110,12 +110,6 @@ namespace Application.Identity.Commands
                     if (externalUser == null)
                     {
                         user = _mapper.Map<AppUser>(userInfo);
-                     
-                        if (userInfo.Email == null)
-                        {
-                            user.Email = "user@mail.com";
-                        }
-                        user.Email = userInfo.Email;
 
                         var result = await _userManager.CreateAsync(user);
                         if (result.Succeeded)
@@ -123,7 +117,7 @@ namespace Application.Identity.Commands
                             var externalLogin = new ExternalLogin
                             {
                                 ProviderId = userInfo.Id,
-                                ProviderName="Facebook",
+                                ProviderName = "Facebook",
                                 User = user
                             };
                             _context.ExternalLogins.Add(externalLogin);
@@ -139,7 +133,7 @@ namespace Application.Identity.Commands
 
                             }
                             var userDto = _mapper.Map<UserDto>(user);
-                            return new TokenResponse(token,userDto);
+                            return new TokenResponse(token, userDto);
                         }
                         throw new RestException(HttpStatusCode.BadRequest, new { msg = "Proplem to save user" });
                     }

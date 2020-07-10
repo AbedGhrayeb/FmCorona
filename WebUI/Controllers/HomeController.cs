@@ -24,7 +24,14 @@ namespace WebUI.Controllers
         {
             return View();
         }
-
+        public IActionResult Face()
+        {
+            return View();
+        }
+        public IActionResult Google()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
