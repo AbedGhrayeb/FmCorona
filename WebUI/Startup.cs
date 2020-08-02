@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Application.MappingProfile;
 using AutoMapper;
 using Domain.Entities;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -57,12 +58,17 @@ namespace WebUI
                 });
             });
             //add Ideintity
-
-            var builder = services.AddDefaultIdentity<AppUser>();
-            var IdentityBuilder = new IdentityBuilder(builder.UserType, builder.Services)
-            .AddRoles<IdentityRole>();
-            IdentityBuilder.AddEntityFrameworkStores<DataContext>();
-            IdentityBuilder.AddSignInManager<SignInManager<AppUser>>();
+            services.AddIdentity<AppUser, IdentityRole>(opts =>
+            {
+                opts.Password.RequireDigit = false;
+                opts.Password.RequiredLength = 6;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireUppercase = false;
+            })
+                .AddDefaultUI()
+                .AddEntityFrameworkStores<DataContext>()
+                .AddDefaultTokenProviders();
 
             //add mediarR
             services.AddMediatR(typeof(CurrentUser.Handler).Assembly);
@@ -73,6 +79,7 @@ namespace WebUI
 
             services.AddScoped<IJwtGenerator, JwtJenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IFilesAccessor, FilesAccesor>();
 
             //token
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("7592d6c3-fe20-488b-8761-1f5fe317a96c"));
@@ -93,17 +100,17 @@ namespace WebUI
 
             services.AddSwaggerGen(setupAction =>
             {
-                setupAction.SwaggerDoc("SawaAPI", new OpenApiInfo
+                setupAction.SwaggerDoc("Fm-Corona", new OpenApiInfo
                 {
 
-                    Description = "Use this API to access Sawa App",
-                    Title = "Sawa API",
+                    Description = "Use this API to access Fm-Corona App",
+                    Title = "Fm-Corona API",
                     Version = "v1.0",
                     Contact = new OpenApiContact
                     {
                         Email = "abedghrayeb@gmail.com",
                         Name = "abdulrahman ghrayeb",
-                        Url = new Uri("https://www.developers.ps")
+                        Url = new Uri("https://fmcorona.com/")
                     }
 
                 });
@@ -138,17 +145,11 @@ namespace WebUI
             services.AddAuthorization();
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddControllers(options =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser().Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            });
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-            //,UserManager<AppUser> userManager,RoleManager<IdentityRole> roleManager)
         {
 
             if (env.IsDevelopment())
@@ -171,10 +172,9 @@ namespace WebUI
 
             app.UseSwaggerUI(setupAction =>
             {
-                setupAction.SwaggerEndpoint("/swagger/SawaAPI/swagger.json", "Sawa API");
+                setupAction.SwaggerEndpoint("/swagger/Fm-Corona/swagger.json", "Fm-Corona API");
                 setupAction.RoutePrefix = "swagger";
                 setupAction.DefaultModelExpandDepth(2);
-                setupAction.DefaultModelRendering(ModelRendering.Model);
                 setupAction.DocExpansion(DocExpansion.None);
                 setupAction.EnableDeepLinking();
             });
@@ -189,7 +189,6 @@ namespace WebUI
                 endpoints.MapRazorPages();
 
             });
-            //Seed.SeedData(roleManager, userManager).Wait();
         }
     }
 }

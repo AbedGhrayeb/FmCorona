@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace WebUI.API
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class UsersController : BaseApiController
     {
         [AllowAnonymous]
@@ -34,22 +35,20 @@ namespace WebUI.API
         }
 
         [AllowAnonymous]
-        [Consumes("application/json")]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<TokenResponse> Regester(Register.RegisterCommand command)
+        public async Task<TokenResponse> Regester([FromForm]Register.RegisterCommand command)
         {
             return await Mediator.Send(command);
         } 
         
-        [Consumes("application/json")]
         [HttpPut()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<UserDto> EditProfile(EditUser.EditUserCommand command)
+        public async Task<UserDto> EditProfile([FromForm]EditUser.EditUserCommand command)
         {
             return await Mediator.Send(command);
         } 

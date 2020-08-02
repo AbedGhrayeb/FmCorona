@@ -9,6 +9,7 @@ namespace WebUI.API
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
+    //[Authorize(AuthenticationSchemes ="Bearer")]
     public class BaseApiController : ControllerBase
     {
         private IMediator _mediator;

@@ -1,9 +1,11 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Errors;
+using Application.Interfaces;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -45,7 +47,14 @@ namespace Application.Identity.Commands
                 {
                     return Unit.Value;
                 }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        throw new RestException(HttpStatusCode.BadRequest, new { msg = error.Description });
 
+                    }
+                }
                 throw new Exception("Proplem Saving Change");
             }
         }

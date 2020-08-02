@@ -54,10 +54,9 @@ namespace Application.Identity.Commands
                     var externalUser = await _context.ExternalLogins.SingleOrDefaultAsync(x => x.ProviderId == userInfo.Sub);
                     if (externalUser == null)
                     {
-                        if ((await _context.Users.SingleOrDefaultAsync(x =>
-                            (x.UserName == userInfo.Email || x.Email == userInfo.Email)) != null))
+                        if ((await _context.Users.SingleOrDefaultAsync(x =>x.Email == userInfo.Email)) != null)
                         {
-                            throw new RestException(HttpStatusCode.BadRequest, new { msg = $"already user with email/username: {userInfo.Email}" });
+                            throw new RestException(HttpStatusCode.BadRequest, new { msg = $"already user with email: {userInfo.Email}" });
 
                         }
                         user = _mapper.Map<AppUser>(userInfo);
@@ -85,14 +84,23 @@ namespace Application.Identity.Commands
 
                             }
                             var userDto = _mapper.Map<UserDto>(user);
+                            userDto.ImgUrl = user.ImgUrl;
                             return new TokenResponse(token, userDto);
+                        }
+                        else
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                throw new RestException(HttpStatusCode.BadRequest, new { msg = error.Description });
+
+                            }
                         }
                         throw new RestException(HttpStatusCode.BadRequest, new { msg = "Proplem to save user" });
                     }
                     else
                     {
                         var userDto = _mapper.Map<UserDto>(externalUser.User);
-
+                        userDto.ImgUrl = user.ImgUrl;
                         return new TokenResponse(_jwtGenerator.CreateToken(externalUser.User), userDto);
                     }
                 }
@@ -133,13 +141,23 @@ namespace Application.Identity.Commands
 
                             }
                             var userDto = _mapper.Map<UserDto>(user);
+                            userDto.ImgUrl = user.ImgUrl;
                             return new TokenResponse(token, userDto);
+                        }
+                        else
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                throw new RestException(HttpStatusCode.BadRequest, new { error = error.Description });
+
+                            }
                         }
                         throw new RestException(HttpStatusCode.BadRequest, new { msg = "Proplem to save user" });
                     }
                     else
                     {
                         var userDto = _mapper.Map<UserDto>(externalUser.User);
+                        userDto.ImgUrl = user.ImgUrl;
 
                         return new TokenResponse(_jwtGenerator.CreateToken(externalUser.User), userDto);
                     }

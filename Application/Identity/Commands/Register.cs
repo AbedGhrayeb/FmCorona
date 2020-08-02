@@ -3,6 +3,7 @@ using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -34,6 +35,7 @@ namespace Application.Identity.Commands
                 return new DateTime(DateOfBirthYear, DateOfBirthMonth, DateOfBirthDay);
 
             }
+            public IFormFile File { get; set; }
             [DataType(DataType.Password)]
             [Required]
             public string Password { get; set; }
@@ -41,6 +43,7 @@ namespace Application.Identity.Commands
             [Compare(nameof(Password))]
             [Required]
             public string ConfirmPassword { get; set; }
+
         }
         public class Handler : IRequestHandler<RegisterCommand, TokenResponse>
         {
@@ -48,14 +51,16 @@ namespace Application.Identity.Commands
             private readonly IMapper _mapper;
             private readonly IJwtGenerator _jwtGenerator;
             private readonly IUserAccessor _userAccessor;
+            private readonly IFilesAccessor _filesAccessor;
 
             public Handler(UserManager<AppUser> userManager, IMapper mapper, IJwtGenerator jwtGenerator,
-                IUserAccessor userAccessor)
+                IUserAccessor userAccessor, IFilesAccessor filesAccessor)
             {
                 _userManager = userManager;
                 _mapper = mapper;
                 _jwtGenerator = jwtGenerator;
                 _userAccessor = userAccessor;
+                _filesAccessor = filesAccessor;
             }
             public async Task<TokenResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
@@ -67,15 +72,17 @@ namespace Application.Identity.Commands
                 {
                     throw new RestException(HttpStatusCode.BadRequest, new { msg = "This Email Already Token" });
                 }
-
+                Random random = new Random();
                 var user = new AppUser
                 {
-                    UserName = request.Email,
+                    UserName = random.Next(0, 99999999).ToString(),
                     Email = request.Email,
                     DateOfBirth = request.ParseDateOfBirth(),
                     FullName = request.FullName,
-                    PhoneNumber = request.PhoneNumber
+                    PhoneNumber = request.PhoneNumber,
+                    ImgUrl = _filesAccessor.UploadFile(request.File)
                 };
+
                 var result = await _userManager.CreateAsync(user, request.Password);
                 if (result.Succeeded)
                 {
@@ -88,8 +95,21 @@ namespace Application.Identity.Commands
                     var userDto = _mapper.Map<UserDto>(user);
                     return new TokenResponse(token, userDto);
                 }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        throw new RestException(HttpStatusCode.BadRequest, new { msg = error.Description });
+
+                    }
+                }
+
                 throw new Exception("Proplem Saving Change");
             }
+
         }
+
+
     }
 }
+
