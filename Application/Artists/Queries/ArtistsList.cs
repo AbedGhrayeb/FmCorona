@@ -30,10 +30,7 @@ namespace Application.Artists.Queries
             public async Task<ArtistsEnvelope> Handle(ArtistsListQuery request, CancellationToken cancellationToken)
             {
                 var artists = await _context.Artists.ToListAsync();
-                if (artists == null || artists.Count == 0)
-                {
-                    throw new RestException(HttpStatusCode.BadRequest, new { msg = "Artists not added yet" });
-                }
+
                 var artistsToReturen = new ArtistsEnvelope
                 {
                     ArtistsDto = _mapper.Map<List<ArtistDto>>(artists)

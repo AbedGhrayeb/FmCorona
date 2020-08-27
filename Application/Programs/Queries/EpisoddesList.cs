@@ -46,14 +46,11 @@ namespace Application.Programs.Queries
                 var program = await _context.Programs.SingleOrDefaultAsync(x => x.Id == request.ProgramId);
                 if (program == null)
                 {
-                    throw new RestException(HttpStatusCode.BadRequest, new { msg = "invalid program id" });
+                    throw new RestException(HttpStatusCode.NotFound);
                 }
                 var queryable =  _context.Episodes.Where(x => x.Program.Id == request.ProgramId)
                     .OrderByDescending(x => x.ShowDate).AsQueryable();
-                if (queryable == null || queryable.Count() == 0)
-                {
-                    throw new RestException(HttpStatusCode.BadRequest, new { msg = "no episodes added yet" });
-                }
+
                 if (!string.IsNullOrEmpty(request.Title))
                 {
                     queryable = queryable.Where(x => x.Title.ToLower().Contains(request.Title.ToLower()));

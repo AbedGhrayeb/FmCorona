@@ -1,4 +1,5 @@
-﻿using Application.Common.Errors;
+﻿using Application.Common;
+using Application.Common.Errors;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
@@ -35,6 +36,8 @@ namespace Application.Identity.Commands
                 return new DateTime(DateOfBirthYear, DateOfBirthMonth, DateOfBirthDay);
 
             }
+            [MaxFileSize(2 * 1024 * 1024)]
+            [PermittedExtensions(new string[] { ".jpg", ".png", ".gif", ".jpeg" })]
             public IFormFile File { get; set; }
             [DataType(DataType.Password)]
             [Required]
@@ -80,7 +83,7 @@ namespace Application.Identity.Commands
                     DateOfBirth = request.ParseDateOfBirth(),
                     FullName = request.FullName,
                     PhoneNumber = request.PhoneNumber,
-                    ImgUrl = _filesAccessor.UploadFile(request.File)
+                    ImgUrl = _filesAccessor.UploadFile(request.File,"users")
                 };
 
                 var result = await _userManager.CreateAsync(user, request.Password);

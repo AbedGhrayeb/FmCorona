@@ -1,4 +1,5 @@
-﻿using Application.Common.Errors;
+﻿using Application.Common;
+using Application.Common.Errors;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
@@ -40,6 +41,8 @@ namespace Application.Identity.Commands
                 catch { }
                 return dateOfBirth;
             }
+            [MaxFileSize(2 * 1024 * 1024)]
+            [PermittedExtensions(new string[] { ".jpg", ".png", ".gif", ".jpeg" })]
             public IFormFile File { get; set; }
         }
         public class Handler : IRequestHandler<EditUserCommand, UserDto>
@@ -72,7 +75,7 @@ namespace Application.Identity.Commands
                 user.Email = request.Email ?? user.Email;
                 user.FullName = request.FullName ?? user.FullName;
                 user.PhoneNumber = request.PhoneNumber ?? user.PhoneNumber;
-                user.ImgUrl = _filesAccessor.ChangeFile(request.File, user.ImgUrl) ?? user.ImgUrl;
+                user.ImgUrl = _filesAccessor.ChangeFile(request.File, user.ImgUrl,"users") ?? user.ImgUrl;
 
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)

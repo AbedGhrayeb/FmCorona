@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Domain.Entities.Topic>
+
+@{
+    ViewData["Title"] = "Topics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Topics</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Body)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Body)
+            </td>
+            <td>
+                <a asp-action="EditTopic" asp-route-id="@item.Id">Edit</a> |
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

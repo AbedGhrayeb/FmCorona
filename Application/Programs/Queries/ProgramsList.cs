@@ -30,10 +30,7 @@ namespace Application.Programs.Queries
             public async Task<ProgramsEnvelope> Handle(ProgramsListQuery request, CancellationToken cancellationToken)
             {
                 var programs = await _context.Programs.ToListAsync();
-                if (programs.Count == 0)
-                {
-                    throw new RestException(HttpStatusCode.BadRequest, new { msg = "no programs added yet" });
-                }
+
                 var programsToReturen = new ProgramsEnvelope
                 {
                     ProgramsDtos = _mapper.Map<List<ProgramDto>>(programs)

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,17 +41,24 @@ namespace Application.Artists
                 }
                 else
                 {
-                    var artists = _context.Artists;
+                    var artists = _context.Artists.ToList() ;
                     foreach (var artist in artists)
                     {
                         if (request.ArtistsIds.Contains(artist.Id))
                         {
                             var favoriteArtist = new FavoriteArtist
                             {
-                                AppUser = user,
-                                Artist = artist
+                                AppUserId = user.Id,
+                                ArtistId = artist.Id
                             };
-                            _context.FavoriteArtists.Add(favoriteArtist);
+                            if (!await _context.FavoriteArtists.AnyAsync(x=>x.ArtistId==favoriteArtist.ArtistId && x.AppUserId==favoriteArtist.AppUserId))
+                            {
+                                _context.FavoriteArtists.Add(favoriteArtist);
+                            }
+                            else
+                            {
+                                continue;
+                            }
                             if (await _context.SaveChangesAsync() == 0)
                             {
                                 throw new Exception("Proplem Saving Changes");

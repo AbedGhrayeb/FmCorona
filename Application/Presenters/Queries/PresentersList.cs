@@ -32,10 +32,6 @@ namespace Application.Presenters.Queries
             {
                 var presenters = await _context.Presenters.ToListAsync();
 
-                if (presenters == null || presenters.Count == 0)
-                {
-                    throw new RestException(HttpStatusCode.BadRequest, new { msg = "no presenters added yet" });
-                }
                 var presentersToReturn = new PresentersEnvelope
                 {
                     PresentersDtos = _mapper.Map<List<PresenterDto>>(presenters)

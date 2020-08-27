@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Persistence
 {
@@ -37,5 +38,13 @@ namespace Persistence
                 .WithMany(c => c.FavoriteArtists)
                 .HasForeignKey(bc => bc.AppUserId);
         }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Data Source=SQL5052.site4now.net,1433;Initial Catalog=DB_A642DE_fmcorona;User Id=DB_A642DE_fmcorona_admin;Password=fm.123456;MultipleActiveResultSets=true", builder =>
+        //    {
+        //        builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+        //    });
+        //    base.OnConfiguring(optionsBuilder);
+        //}
     }
 }

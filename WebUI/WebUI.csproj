@@ -24,7 +24,7 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
   </ItemGroup>
 
@@ -34,7 +34,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\files\" />
+    <Folder Include="Views\Contacts\" />
+    <Folder Include="wwwroot\files\articls\" />
+    <Folder Include="wwwroot\files\artists\" />
+    <Folder Include="wwwroot\files\episodes\" />
+    <Folder Include="wwwroot\files\records\" />
+    <Folder Include="wwwroot\files\presenters\" />
+    <Folder Include="wwwroot\files\programs\" />
+    <Folder Include="wwwroot\files\users\" />
   </ItemGroup>
 
 </Project>

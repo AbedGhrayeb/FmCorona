@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Application.Programs.WeeklyScheduleDto>
+
+@{
+    ViewData["Title"] = "Schedules";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Schedules</h1>
+<div class="row">
+<div class="col-md-4">
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
+</div>
+<div class="col-md-6">
+    <form method="get" asp-action="Index">
+
+        <div class="input-group">
+            <select name="dayOfWeek" asp-items="Html.GetEnumSelectList<DayOfWeek>()" class="form-control"></select>
+            <div class="input-group-append">
+                <button ty class="btn btn-primary" type="submit">Select Day</button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Program
+            </th>
+
+            <th>
+               Guest Name
+            </th>
+            <th>
+                KSA Time
+            </th>
+            <th>
+                UAE Time
+            </th>
+            <th>
+                Is On Air Now?
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProgramName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.GuestName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KSA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UAE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OnAir)
+                </td>
+                <td>
+                    <form method="post" asp-action="Delete">
+                        <input type="hidden" asp-for="@item.Id" />
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
+                        <button type="submit" asp-action="Delete" asp-route-id="@item.Id"
+                                class="btn btn-danger" onclick="return confirm('Are you shure delete this item ?')">
+                            Delete
+                        </button>
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

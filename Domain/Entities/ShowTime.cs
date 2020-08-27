@@ -9,8 +9,7 @@ namespace Domain.Entities
         public DayOfWeek DayOfWeek { get; set; }
         [DataType(DataType.Time)]
         public DateTime? FirstShowTime { get; set; }
-        [DataType(DataType.Time)]
-        public DateTime? RepatetShowTime { get; set; }
+        public int ProgramId { get; set; }
 
 
     }

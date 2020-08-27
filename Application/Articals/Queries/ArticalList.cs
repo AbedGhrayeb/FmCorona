@@ -32,10 +32,7 @@ namespace Application.Articals.Queries
             public async Task<HighlightsEnvelope> Handle(ArticalListQuery request, CancellationToken cancellationToken)
             {
                 var articals = _context.Articals;
-                if (articals == null || articals.Count() == 0)
-                {
-                    throw new RestException(System.Net.HttpStatusCode.BadRequest, new { msg = "Articals not added yet" });
-                }
+
                 var orderedArtical = await articals.OrderByDescending(x => x.CreateAt).ToListAsync();
                 var highlight = new HighlightsEnvelope
                 {

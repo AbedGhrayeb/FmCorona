@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using System;
+using System.Linq;
 
 namespace Application.Programs
 {
@@ -9,11 +10,14 @@ namespace Application.Programs
         public bool Resolve(Schedule source, WeeklyScheduleDto destination, bool onAir, ResolutionContext context)
         {
 
-
+            if (source.Program.ShowTimes.Count==0)
+            {
+                return false;
+            }
             if (source.DayOfWeek == DateTime.UtcNow.DayOfWeek)
             {
-                if (source.Program.ShowTime.FirstShowTime.Value >= DateTime.UtcNow &&
-                     source.Program.ShowTime.FirstShowTime.Value.AddMinutes(source.Program.DefaultDuration) <= DateTime.UtcNow)
+                if (source.Program.ShowTimes.FirstOrDefault().FirstShowTime.Value >= DateTime.UtcNow &&
+                     source.Program.ShowTimes.FirstOrDefault().FirstShowTime.Value.AddMinutes(source.Program.DefaultDuration) <= DateTime.UtcNow)
                 {
                     return true;
                 }

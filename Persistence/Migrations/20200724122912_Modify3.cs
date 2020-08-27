@@ -59,7 +59,7 @@ namespace Persistence.Migrations
                         column: x => x.ProgramId,
                         principalTable: "Programs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,13 +82,13 @@ namespace Persistence.Migrations
                         column: x => x.PresenterId,
                         principalTable: "Presenters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_SocialMedias_Programs_ProgramId",
                         column: x => x.ProgramId,
                         principalTable: "Programs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(
@@ -174,7 +174,7 @@ namespace Persistence.Migrations
                 column: "ProgramId",
                 principalTable: "Programs",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.SetNull);
         }
     }
 }

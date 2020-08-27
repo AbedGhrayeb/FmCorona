@@ -45,11 +45,7 @@ namespace Application.Programs.Queries
                 {
                     queryable = queryable.Where(x => (int)x.DayOfWeek == request.DayOfWeek.Value);
                 }
-                if (queryable.Count()==0)
-                {
-                    throw new RestException(HttpStatusCode.BadRequest, new { msg = "not addred schedules yet" });
-                }
-                var schedules = await queryable.OrderBy(x => x.Program.ShowTime.FirstShowTime.Value).ToListAsync();
+                var schedules = await queryable.OrderBy(x => x.Program.ShowTimes.FirstOrDefault().FirstShowTime.Value).ToListAsync();
                 var schedulesToReuren = new ScheduleEnvelope
                 {
                     ScheduleDtos = _mapper.Map<List<WeeklyScheduleDto>>(schedules)

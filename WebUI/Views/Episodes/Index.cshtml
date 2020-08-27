@@ -1,0 +1,78 @@
+@model IEnumerable<Application.Programs.EpisodeDto>
+
+@{
+    ViewData["Title"] = "Episodes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Episodes</h1>
+
+<p>
+    <a asp-action="Create" asp-route-id="@ViewBag.ProgramId" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Url)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImgUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Guest)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GuestName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                <audio controls>
+                    <source src="@item.Url">
+                </audio>
+            </td>
+
+
+            <td>
+                <img asp-append-version="true" alt="episode image" src="@item.ImgUrl" width="50" height="50" class="img-thumbnail" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Guest)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuestName)
+            </td>
+            <td>
+                <form method="post" asp-action="Delete">
+                    <input type="hidden" asp-for="@item.Id" />
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
+                    <button type="submit" asp-action="Delete" asp-route-id="@item.Id"
+                            class="btn btn-danger" onclick="return confirm('Are you sure delete this item?')">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

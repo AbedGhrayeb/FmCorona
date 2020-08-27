@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Application.Programs
+﻿namespace Application.Programs
 {
     public class WeeklyScheduleDto
     {
+        public int Id { get; set; }
         public bool Guest { get; set; }
         public string GuestName { get; set; }
         public string ProgramName { get; set; }

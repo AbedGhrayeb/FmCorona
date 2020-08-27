@@ -8,7 +8,7 @@ namespace WebUI.Services
 {
     public class ExternalLoginService : IExternalLoginService
     {
-        private const string FacebookUserInfoUrl = "https://graph.facebook.com/me?fields=first_name,last_name,name,email&access_token={0}";
+        private const string FacebookUserInfoUrl = "https://graph.facebook.com/me?fields=first_name,last_name,name,picture,email&access_token={0}";
 
         private const string GoogleUserInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
         private readonly IHttpClientFactory _httpClientFactory;

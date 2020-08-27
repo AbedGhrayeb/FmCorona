@@ -1,5 +1,5 @@
-﻿using Application.Records.Handlers;
-using Application.Topics.Handlers;
+﻿using Application.Records.Commmands;
+using Application.Topics.Commands;
 using Application.Topics.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

@@ -127,7 +127,7 @@ namespace Persistence.Migrations
                         column: x => x.PresenterId,
                         principalTable: "Presenters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -150,7 +150,7 @@ namespace Persistence.Migrations
                         column: x => x.ProgramId,
                         principalTable: "Programs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,7 +213,7 @@ namespace Persistence.Migrations
                         column: x => x.ProgramId,
                         principalTable: "Programs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(

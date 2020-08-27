@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Persistence
@@ -98,9 +99,7 @@ namespace Persistence
                     DefaultDuration = 60,
                     Description = "Lorem Ipsuis simply dummy text of the printing and typesetting industrym",
                     Name = "Corona Online",
-                    StartigDate = DateTime.UtcNow,
                     Presenter = presenter,
-                    ShowTime = showTime
                 };
                 var episode = new Episode
                 {
@@ -113,7 +112,6 @@ namespace Persistence
                     Title = "Title1",
                     Url = "episode link"
                 };
-
                 context.Presenters.Add(presenter);
                 context.ShowTimes.Add(showTime);
                 context.Programs.Add(program);

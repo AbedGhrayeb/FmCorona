@@ -285,17 +285,9 @@ namespace Persistence.Migrations
                     b.Property<int?>("PresenterId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ShowTimeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("StartigDate")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PresenterId");
-
-                    b.HasIndex("ShowTimeId");
 
                     b.ToTable("Programs");
                 });
@@ -359,10 +351,12 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("FirstShowTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("RepatetShowTime")
-                        .HasColumnType("datetime2");
+                    b.Property<int?>("ProgramId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProgramId");
 
                     b.ToTable("ShowTimes");
                 });
@@ -581,10 +575,6 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Presenter", "Presenter")
                         .WithMany("Programs")
                         .HasForeignKey("PresenterId");
-
-                    b.HasOne("Domain.Entities.ShowTime", "ShowTime")
-                        .WithMany()
-                        .HasForeignKey("ShowTimeId");
                 });
 
             modelBuilder.Entity("Domain.Entities.Record", b =>
@@ -598,6 +588,13 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.Program", "Program")
                         .WithMany()
+                        .HasForeignKey("ProgramId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ShowTime", b =>
+                {
+                    b.HasOne("Domain.Entities.Program", null)
+                        .WithMany("ShowTimes")
                         .HasForeignKey("ProgramId");
                 });
 
