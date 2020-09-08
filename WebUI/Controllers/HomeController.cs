@@ -22,16 +22,9 @@ namespace WebUI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToPage("/Account/Login",new {area="Identity"});
         }
-        public IActionResult Face()
-        {
-            return View();
-        }
-        public IActionResult Google()
-        {
-            return View();
-        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -65,6 +65,7 @@ namespace Application.Identity.Commands
                         var result = await _userManager.CreateAsync(user);
                         if (result.Succeeded)
                         {
+                            await _userManager.AddToRoleAsync(user, "user");
                             var externalLogin = new ExternalLogin
                             {
                                 ProviderId = userInfo.Sub,
@@ -122,6 +123,8 @@ namespace Application.Identity.Commands
                         var result = await _userManager.CreateAsync(user);
                         if (result.Succeeded)
                         {
+                            await _userManager.AddToRoleAsync(user, "user");
+
                             var externalLogin = new ExternalLogin
                             {
                                 ProviderId = userInfo.Id,

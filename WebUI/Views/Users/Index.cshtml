@@ -1,0 +1,39 @@
+﻿@model WebUI.Helpers.PaginatedList<Domain.Entities.AppUser>
+@{
+    ViewData["Title"] = "Users List";
+}
+<form method="post" asp-action="DeleteAllUsers">
+    <button type="submit" asp-action="DeleteAllUsers" class="btn btn-danger mt-2" style="width:auto"
+            onclick="return confirm('Are you sure you want to delete All users ?');">
+        Delete All Users
+    </button>
+
+    <hr />
+</form>
+@if (Model.Count() > 0)
+{
+    <partial name="_UsersList" model="Model" />
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No User Registed Yet
+        </div>
+
+    </div>
+}
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<a asp-action="UsersList"
+   asp-route-pageIndex="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="UsersList"
+   asp-route-pageIndex="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

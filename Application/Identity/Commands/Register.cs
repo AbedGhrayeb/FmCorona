@@ -89,6 +89,7 @@ namespace Application.Identity.Commands
                 var result = await _userManager.CreateAsync(user, request.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "user");
                     var token = _jwtGenerator.CreateToken(user);
                     if (string.IsNullOrEmpty(token))
                     {

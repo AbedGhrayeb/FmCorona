@@ -31,13 +31,17 @@ namespace Persistence
                     LockoutEnabled = false
                 };
                 await userManager.CreateAsync(admin, "Admin.1234");
+                await userManager.AddToRoleAsync(admin, "admin");
                 var emp = new AppUser
                 {
-                    UserName = "emp@info.com",
-                    Email = "emp@info.com",
+                    UserName = "test@mail.com",
+                    Email = "test@mail.com",
+                    FullName = "tast tast",
                     LockoutEnabled = false
                 };
-                await userManager.CreateAsync(emp, "Emp.1234");
+                await userManager.CreateAsync(emp, "test.1234");
+                await userManager.AddToRoleAsync(admin, "user");
+
             }
 
             if (!await context.Articals.AnyAsync())
@@ -55,6 +59,7 @@ namespace Persistence
             {
                 var artist = new Artist
                 {
+                    Id = "a",
                     Name = "Artist",
                 };
                 context.Artists.Add(artist);
@@ -73,19 +78,19 @@ namespace Persistence
                 await context.SaveChangesAsync();
             }
 
-            if (!await context.Presenters.AnyAsync())
-            {
-                var presenter = new Presenter
-                {
-                    FirstName = "first",
-                    LastName = "last",
-                    Bio = "Lorem Ipsuis simply dummy text of the printing and typesetting industrym"
-                };
-                context.Presenters.Add(presenter);
-                await context.SaveChangesAsync();
-            }
+            //if (!await context.Presenters.AnyAsync())
+            //{
+            //    var presenter = new Presenter
+            //    {
+            //        FirstName = "first",
+            //        LastName = "last",
+            //        Bio = "Lorem Ipsuis simply dummy text of the printing and typesetting industrym"
+            //    };
+            //    context.Presenters.Add(presenter);
+            //    await context.SaveChangesAsync();
+            //}
 
-            if (!await context.Episodes.AnyAsync())
+            if (!await context.Programs.AnyAsync())
             {
                 var presenter = new Presenter
                 {
@@ -93,7 +98,6 @@ namespace Persistence
                     LastName = "last",
                     Bio = "Lorem Ipsuis simply dummy text of the printing and typesetting industrym"
                 };
-                var showTime = new ShowTime { DayOfWeek = DayOfWeek.Sunday, FirstShowTime = DateTime.UtcNow };
                 var program = new Program
                 {
                     DefaultDuration = 60,
@@ -107,28 +111,25 @@ namespace Persistence
                     Guest = true,
                     GuestName = "Guest",
                     Number = 1,
-                    Program = program,
                     ShowDate = DateTime.Now,
                     Title = "Title1",
-                    Url = "episode link"
+                    Url = "episode link",
+                    Program=program
                 };
+
                 context.Presenters.Add(presenter);
-                context.ShowTimes.Add(showTime);
                 context.Programs.Add(program);
                 context.Episodes.Add(episode);
 
                 await context.SaveChangesAsync();
             }
 
-            if (!await context.SocialMedias.AnyAsync())
-            {
-                var socialMedia = new SocialMedia { Provider = "Facebook", Link = "https://www.facebook.com" };
-                context.SocialMedias.Add(socialMedia);
-                await context.SaveChangesAsync();
-            }
+
+
 
         }
     }
 }
+
 
 

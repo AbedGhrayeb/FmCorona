@@ -28,9 +28,6 @@
                 @Html.DisplayNameFor(model => model.ImgUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Guest)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.GuestName)
             </th>
             <th></th>
@@ -56,9 +53,7 @@
             <td>
                 <img asp-append-version="true" alt="episode image" src="@item.ImgUrl" width="50" height="50" class="img-thumbnail" />
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Guest)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.GuestName)
             </td>

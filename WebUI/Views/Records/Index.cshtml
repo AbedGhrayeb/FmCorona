@@ -25,11 +25,11 @@
         <tr>
             <td>
                     <audio controls>
-                        <source src="@item.RecordUrl">
+                        <source src="~/files/records/@item.RecordUrl">
                     </audio>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser.UserName)
+                @Html.DisplayFor(modelItem => item.AppUser.FullName)
             </td>
             <td>
                 <form method="post" asp-action="Delete">

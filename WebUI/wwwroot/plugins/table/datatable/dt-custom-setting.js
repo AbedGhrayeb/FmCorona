@@ -26,11 +26,11 @@ var DTcustomsetting = {
         "previous": "<i class='flaticon-left-arrow-1'></i> Previous",
         "next": "Next <i class='flaticon-right-arrow-1'></i>"
     }
-
-    languageInfo: {
-    	"Showing page _PAGE_ of _PAGES_"
-    }
-
+    ,
+    //languageInfo: {
+    //    "Showing page _PAGE_ of _PAGES_":""
+    //}
+    
     
     
 };

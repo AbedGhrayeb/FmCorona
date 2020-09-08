@@ -103,34 +103,6 @@ namespace WebUI.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-        
-        // GET: PresentersController/SocialMedia/5
-  
-        public ActionResult SocialMedia(int id)
-        {
-            var model = new AddSocialMediaVm { PresenterId = id };
-            return View(model);
-
-        }
-        // POST: PresentersController/SocialMedia/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SocialMedia(int id,AddSocialMediaVm model)
-        {
-            ViewBag.PresenterId = id;
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            try
-            {
-                await Mediator.Send(new AddSocialMedia.AddSocialMediaCommand(model));
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View(model);
-            }
-        }
+       
     }
 }

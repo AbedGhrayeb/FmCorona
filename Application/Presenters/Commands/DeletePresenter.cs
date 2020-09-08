@@ -25,7 +25,7 @@ namespace Application.Presenters.Commands
             public async Task<Unit> Handle(DeletePresenterCommand request, CancellationToken cancellationToken)
             {
 
-                var presenter = await _context.Presenters.Include(x => x.SocialMedias)
+                var presenter = await _context.Presenters
                     .FirstOrDefaultAsync(x => x.Id == request.Id);
                 if (presenter == null)
                 {

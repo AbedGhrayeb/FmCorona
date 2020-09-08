@@ -10,7 +10,6 @@ namespace Domain.Entities
         {
             Episodes = new List<Episode>();
             ShowTimes = new HashSet<ShowTime>();
-            SocialMedias = new HashSet<SocialMedia>();
         }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,7 +20,6 @@ namespace Domain.Entities
         public virtual Presenter Presenter { get; set; }
         public virtual ICollection<Episode> Episodes { get; set; }
         public virtual ICollection<ShowTime> ShowTimes { get; set; }
-        public virtual ICollection<SocialMedia> SocialMedias { get; set; }
 
 
     }

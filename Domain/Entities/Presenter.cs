@@ -7,7 +7,6 @@ namespace Domain.Entities
         public Presenter()
         {
             Programs = new HashSet<Program>();
-            SocialMedias = new HashSet<SocialMedia>();
 
         }
         public int Id { get; set; }
@@ -16,7 +15,6 @@ namespace Domain.Entities
         public string Bio { get; set; }
         public string ImgUrl { get; set; }
         public virtual ICollection<Program> Programs { get; set; }
-        public virtual ICollection<SocialMedia> SocialMedias { get; set; }
 
     }
 }

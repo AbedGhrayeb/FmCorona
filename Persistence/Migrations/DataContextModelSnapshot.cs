@@ -351,7 +351,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("FirstShowTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ProgramId")
+                    b.Property<int>("ProgramId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -359,37 +359,6 @@ namespace Persistence.Migrations
                     b.HasIndex("ProgramId");
 
                     b.ToTable("ShowTimes");
-                });
-
-            modelBuilder.Entity("Domain.Entities.SocialMedia", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ImgUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Link")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PresenterId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProgramId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Provider")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PresenterId");
-
-                    b.HasIndex("ProgramId");
-
-                    b.ToTable("SocialMedias");
                 });
 
             modelBuilder.Entity("Domain.Entities.Topic", b =>
@@ -595,18 +564,9 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.Program", null)
                         .WithMany("ShowTimes")
-                        .HasForeignKey("ProgramId");
-                });
-
-            modelBuilder.Entity("Domain.Entities.SocialMedia", b =>
-                {
-                    b.HasOne("Domain.Entities.Presenter", null)
-                        .WithMany("SocialMedias")
-                        .HasForeignKey("PresenterId");
-
-                    b.HasOne("Domain.Entities.Program", null)
-                        .WithMany("SocialMedias")
-                        .HasForeignKey("ProgramId");
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

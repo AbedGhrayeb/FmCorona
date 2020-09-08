@@ -7,7 +7,6 @@ namespace Application.Presenters
     {
         public PresenterDto()
         {
-            SocialMediaDtos = new List<SocialMediaDto>();
             Programs = new List<string>();
         }
         public int Id { get; set; }
@@ -21,7 +20,6 @@ namespace Application.Presenters
         [Display(Name = "Image")]
         public string ImgUrl { get; set; }
         public List<string> Programs { get; set; }
-        [Display(Name = "Social Media")]
-        public List<SocialMediaDto> SocialMediaDtos { get; set; }
+
     }
 }

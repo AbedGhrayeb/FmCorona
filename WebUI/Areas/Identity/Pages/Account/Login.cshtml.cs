@@ -20,6 +20,7 @@ namespace WebUI.Areas.Identity.Pages.Account
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+
         private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(SignInManager<AppUser> signInManager, 
@@ -83,8 +84,13 @@ namespace WebUI.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user=await _userManager.FindByNameAsync(Input.Email);
+                    if (!await _userManager.IsInRoleAsync(user,"admin"))
+                    {
+                     return RedirectToPage("./AccessDenied");   
+                    }
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index","Programs");
                 }
                 if (result.RequiresTwoFactor)
                 {
