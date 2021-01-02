@@ -10,9 +10,7 @@ namespace Application.Programs
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
-        [Required]
-        [Display(Name = "Duration")]
-        public int DefaultDuration { get; set; }
+
         [MaxFileSize(2 * 1024 * 1024)]
         [PermittedExtensions(new string[] { ".jpg", ".png", ".gif", ".jpeg" })]
         public IFormFile Image { get; set; }

@@ -8,6 +8,7 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string RecordUrl { get; set; }
+        public int? AppUserId { get; set; }
         public virtual AppUser AppUser { get; set; }
     }
 }

@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "Notifications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Notifications Hub</h1>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <input type="text" id="title" name="title" placeholder="type title here" class="form-control" required />
+        <br />
+        <input type="text" id="body" name="body" placeholder="type msg body here" class="form-control" required />
+        <br />
+        <input type="submit" onclick="sendInputValue();" value="Send" class="btn btn-primary" />
+    </div>
+</div>
+<script>
+    function sendInputValue() {
+        // Selecting the input element and get its value
+        var titleVal = document.getElementById("title").value;
+        var bodyVal = document.getElementById("body").value;
+
+        $.ajax({
+            type: 'POST',
+            url: "https://fcm.googleapis.com/fcm/send",
+            headers: {
+                Authorization: 'key=' + 'AAAAzf6_zxU:APA91bEsgtff6iAyaoZhovMWug8qS4s-gMKU6f9_fkXr-Q7vhnT2dA23_7zOkI0ghjycxle9Zimho88XZWW6owAlocah3ADCPu1xdSLw-hIS8-Yp9DyUZJhcb9fXDkXBBEL41N05HiJ7'
+            },
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+                "to": "/topics/TopicName",
+                "data": { "title": titleVal, "text": bodyVal, "click_action": "OPEN_ACTIVITY_1", "image": "", "url": "" }
+            }),
+            success: function (response) {
+                console.log(response);
+                alert("Messege Success sent");
+
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.error);
+            }
+        });
+    }
+</script>

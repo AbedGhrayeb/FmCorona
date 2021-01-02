@@ -239,7 +239,7 @@ namespace Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProviderId = table.Column<string>(nullable: true),
                     ProviderName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -249,7 +249,7 @@ namespace Persistence.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -293,7 +293,7 @@ namespace Persistence.Migrations
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

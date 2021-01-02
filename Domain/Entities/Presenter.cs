@@ -4,11 +4,6 @@ namespace Domain.Entities
 {
     public class Presenter
     {
-        public Presenter()
-        {
-            Programs = new HashSet<Program>();
-
-        }
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -38,7 +38,6 @@ namespace Application.Programs.Commands
                 {
                     throw new RestException(System.Net.HttpStatusCode.NotFound);
                 }
-                program.DefaultDuration = request.Vm.DefaultDuration;
                 program.Description = request.Vm.Description ?? program.Description;
                 program.Name = request.Vm.Name ?? program.Name;
                 program.ImgUrl = _filesAccessor.ChangeFile(request.Vm.Image, program.ImgUrl, "programs") ?? program.ImgUrl;

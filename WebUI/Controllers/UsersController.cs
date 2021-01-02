@@ -3,21 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 using WebUI.Helpers;
 
 namespace WebUI.Controllers
 {
+    [Authorize(Roles="admin")]
     public class UsersController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly DataContext _context;
 
-        public UsersController(UserManager<AppUser> userManager)
+        public UsersController(UserManager<AppUser> userManager,DataContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
         // GET: UsersController
 
@@ -31,50 +36,6 @@ namespace WebUI.Controllers
 
         }
 
-
-        // GET: UsersController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: UsersController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UsersController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: UsersController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-
         // POST: UsersController/Delete/5
         [HttpPost]
         public async Task<IActionResult> Delete(string userId)
@@ -86,20 +47,18 @@ namespace WebUI.Controllers
             }
             else
             {
-                var result = await _userManager.DeleteAsync(user);
-                if (result.Succeeded)
+                var deleteUser = await _context.Users.Include(x=>x.ExternalLogins)
+                    .Include(x=>x.Records)
+                .SingleOrDefaultAsync(x=>x.Id==userId);
+                _context.Users.Remove(deleteUser);
+                var result=await _context.SaveChangesAsync()>0;
+                if (result)
                 {
                     TempData["UserFeed"] = $"Succeeded Delete User: {user.Email}";
                     return RedirectToAction(nameof(Index), _userManager.Users);
                 }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Index),_userManager.Users);
             }
         }
         [HttpPost]
@@ -110,21 +69,18 @@ namespace WebUI.Controllers
             {
                 if (! await _userManager.IsInRoleAsync(user,"admin"))
                 {
-                    var result = await _userManager.DeleteAsync(user);
-                    if (result.Succeeded)
-                    {
-                        TempData["UserFeed"] = "Succeeded Delete All Users";
-                        return RedirectToAction(nameof(Index), _userManager.Users);
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError("", error.Description);
-                        }
-                    }
+                    var deleteUser = await _context.Users.Include(x => x.ExternalLogins)
+                   .Include(x => x.Records)
+                    .SingleOrDefaultAsync(x => x.Id == user.Id);
+                    _context.Users.Remove(deleteUser);
                 }
-              
+                var result = await _context.SaveChangesAsync() > 0;
+                if (result)
+                {
+                    TempData["UserFeed"] = "Succeeded Delete All Users";
+                    return RedirectToAction(nameof(Index), _userManager.Users);
+                }
+                throw new Exception("Proplem Saving Changes");
             }
             return RedirectToAction(nameof(Index));
 

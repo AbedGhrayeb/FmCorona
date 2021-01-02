@@ -1,4 +1,5 @@
-﻿using Application.Articals;
+﻿using Application.Advertisings;
+using Application.Articals;
 using Application.Artists;
 using Application.Identity;
 using Application.Interfaces.ExternalAuth;
@@ -48,9 +49,9 @@ namespace Application.MappingProfile
             CreateMap<Program, ProgramDto>()
                 .ForMember(dest => dest.ImgUrl, opts => opts.MapFrom(src => string.IsNullOrEmpty(src.ImgUrl) ? null : "/files/programs/" + src.ImgUrl))
                 .ForMember(dest => dest.Presenter, opts => opts.MapFrom(src => src.Presenter.FirstName + " " + src.Presenter.LastName))
-                .ForMember(dest => dest.DayOfWeek, opts => opts.MapFrom(src => src.ShowTimes.FirstOrDefault().DayOfWeek.ToString()))
-                .ForMember(dest => dest.ShowTimeFrom, opts => opts.MapFrom(src => src.ShowTimes.FirstOrDefault().FirstShowTime.Value.ToShortTimeString()))
-                .ForMember(dest => dest.ShowTimeTo, opts => opts.MapFrom(src => src.ShowTimes.FirstOrDefault().FirstShowTime.Value.AddMinutes(src.DefaultDuration).ToShortTimeString()));
+                .ForMember(dest => dest.DayOfWeek, opts => opts.MapFrom(src => src.Schedules.LastOrDefault().DayOfWeek.ToString()))
+                .ForMember(dest => dest.ShowTimeFrom, opts => opts.MapFrom(src => src.Schedules.LastOrDefault().ShowTime.ToShortTimeString()))
+                .ForMember(dest => dest.ShowTimeTo, opts => opts.MapFrom(src => src.Schedules.LastOrDefault().ShowTime.AddMinutes(src.Schedules.LastOrDefault().Duration).ToShortTimeString()));
 
             CreateMap<Episode, EpisodeDto>()
             .ForMember(dest => dest.ProgramId, opts => opts.MapFrom(src => src.Program.Id))
@@ -60,22 +61,26 @@ namespace Application.MappingProfile
             .ForMember(dest => dest.ImgUrl, opts => opts.MapFrom(src => string.IsNullOrEmpty(src.Program.ImgUrl) ? null : "/files/programs/" + src.Program.ImgUrl));
 
             CreateMap<Schedule, WeeklyScheduleDto>()
+            .ForMember(dest => dest.Guest, opts => opts.MapFrom(src => src.Guest))
+            .ForMember(dest => dest.GuestName, opts => opts.MapFrom(src => src.GuestName))
             .ForMember(dest => dest.ProgramName, opts => opts.MapFrom(src => src.Program.Name))
             .ForMember(dest => dest.Presenter, opts => opts.MapFrom(src => src.Program.Presenter.FirstName + " " + src.Program.Presenter.LastName))
-            .ForMember(dest => dest.UAE, opts => opts.MapFrom(src => src.Program.ShowTimes.FirstOrDefault().FirstShowTime.Value.AddHours(4).ToShortTimeString()))
-            .ForMember(dest => dest.KSA, opts => opts.MapFrom(src => src.Program.ShowTimes.FirstOrDefault().FirstShowTime.Value.AddHours(3).ToShortTimeString()))
+            .ForMember(dest => dest.UAE, opts => opts.MapFrom(src => src.ShowTime.AddHours(4).ToShortTimeString()))
+            .ForMember(dest => dest.KSA, opts => opts.MapFrom(src => src.ShowTime.AddHours(3).ToShortTimeString()))
             .ForMember(dest => dest.ImgUrl, opts => opts.MapFrom(src => string.IsNullOrEmpty(src.Program.ImgUrl) ? null : "/files/programs/" + src.Program.ImgUrl))
             .ForMember(dest => dest.OnAir, opts => opts.MapFrom<OnAirResolver>());
 
+            CreateMap<Schedule, ProgramScheduleDto>()
+            .ForMember(dest => dest.ProgramName, opts => opts.MapFrom(src => src.Program.Name))
+            .ForMember(dest => dest.Presenter, opts => opts.MapFrom(src => src.Program.Presenter.FirstName + " " + src.Program.Presenter.LastName))
+            .ForMember(dest => dest.UAE, opts => opts.MapFrom(src => src.ShowTime.ToShortTimeString()))
+            .ForMember(dest => dest.KSA, opts => opts.MapFrom(src => src.ShowTime.AddHours(-1).ToShortTimeString()));
 
-            CreateMap<AddShowTimeVm, ShowTime>();
-            CreateMap<ShowTime, ProgramShowTimesVm>()
-                .ForMember(dest => dest.DayOfWeek, opts => opts.MapFrom(src => src.DayOfWeek.ToString()))
-                .ForMember(dest => dest.FirstShowTime, opts => opts.MapFrom(src => src.FirstShowTime.Value.ToShortTimeString()));
 
-            CreateMap<AddScheduleVm, Schedule>();
             CreateMap<Schedule, EditScheduleVm>();
 
+            CreateMap<Advertising, AdvertisingVm>()
+               .ForMember(dest => dest.ImgUrl, opts => opts.MapFrom(src => string.IsNullOrEmpty(src.ImgUrl) ? null : "/files/advertisings/" + src.ImgUrl));
 
         }
 

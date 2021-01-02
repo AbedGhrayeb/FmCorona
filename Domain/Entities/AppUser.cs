@@ -9,7 +9,6 @@ namespace Domain.Entities
         public AppUser()
         {
             ExternalLogins = new HashSet<ExternalLogin>();
-            FavoriteArtists = new HashSet<FavoriteArtist>();
             Records = new HashSet<Record>();
         }
         public string FullName { get; set; }

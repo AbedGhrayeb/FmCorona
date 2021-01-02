@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Domain.Entities.Live>
+
+@{
+    ViewData["Title"] = "Lives Url";
+}
+
+<h4 class="p-2 bg-primary text-white text-center">Live URL</h4>
+<div class="container-fluid mt-5">
+
+    <form asp-action="Create" asp-controller="Lives" method="post">
+        <div class="row p-2 text-center">
+            <div class="col-8">
+            <input name="Url" type="url" class="form-control text-center" placeholder="type url here" required />
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn btn-primary">Add</button>
+            </div>
+        </div>
+    </form>
+</div>
+<hr />
+@if (Model.Count() == 0)
+{
+    <div class="row">
+        <div class="col text-center p-2">No Live Url Added</div>
+    </div>
+}
+else
+{
+    <table class="table text-center table-striped table-bordered table-hover">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th class="text-white">Url</th>
+                <th class="text-white">Create At</th>
+            </tr>
+        </thead>
+        <tbody>
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Url</td>
+                    <td>@item.CreatAt.ToShortDateString()</td>
+          
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}

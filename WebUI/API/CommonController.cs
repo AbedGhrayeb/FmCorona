@@ -1,10 +1,12 @@
 ﻿using Application.Records.Commmands;
 using Application.Topics.Commands;
 using Application.Topics.Queries;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 using static Application.Topics.Queries.TopicDetails;
 using static Application.Topics.Queries.TopicsList;
@@ -54,5 +56,13 @@ namespace WebUI.API
             return await Mediator.Send(command);
         }
 
+        [HttpGet("live")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> GetLiveUrl()
+        {
+            var lives = await Mediator.Send(new Lives.LivesQuery());
+            return Ok(new { url = lives.LastOrDefault().Url });
+        }
     }
 }

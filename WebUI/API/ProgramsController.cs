@@ -26,9 +26,9 @@ namespace WebUI.API
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<EpisodesEnvelope>> GetEpisodes(int program_id,int? page,int? limit,string title)
+        public async Task<ActionResult<EpisodesEnvelope>> GetEpisodes(int program_id, int? page, int? limit, string title)
         {
-            return await Mediator.Send(new EpisodesList.EpisodesListQuery(page,limit,title) { ProgramId = program_id });
+            return await Mediator.Send(new EpisodesList.EpisodesListQuery(page, limit, title) { ProgramId = program_id });
         }
 
         [HttpGet("episodes/{id}")]

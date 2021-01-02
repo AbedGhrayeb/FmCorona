@@ -8,6 +8,10 @@ namespace WebUI.Controllers
 {
     public class CommonController : BaseMvcController
     {
+        public IActionResult Notification()
+        {
+            return View();
+        }
         public async Task<IActionResult> Contacts()
         {
             return View(await Mediator.Send(new ContactsList.ContactsListQuery()));

@@ -18,8 +18,7 @@ namespace WebUI.Controllers
         }
         public ActionResult Create(int id)
         {
-            AddEpisodeVm model = new AddEpisodeVm();
-            model.ProgramId = id;
+            AddEpisodeVm model = new AddEpisodeVm { ProgramId = id };
             return View(model);
         }
 

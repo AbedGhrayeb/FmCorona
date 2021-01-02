@@ -30,7 +30,7 @@ namespace Persistence
                     Email = "fmcorona@info.com",
                     LockoutEnabled = false
                 };
-                await userManager.CreateAsync(admin, "Admin.1234");
+                await userManager.CreateAsync(admin, "Corona.1234");
                 await userManager.AddToRoleAsync(admin, "admin");
                 var emp = new AppUser
                 {
@@ -100,7 +100,6 @@ namespace Persistence
                 };
                 var program = new Program
                 {
-                    DefaultDuration = 60,
                     Description = "Lorem Ipsuis simply dummy text of the printing and typesetting industrym",
                     Name = "Corona Online",
                     Presenter = presenter,

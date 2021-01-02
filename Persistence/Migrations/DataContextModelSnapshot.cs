@@ -19,6 +19,33 @@ namespace Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Domain.Entities.Advertising", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImgUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sponsor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Advertisings");
+                });
+
             modelBuilder.Entity("Domain.Entities.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -167,7 +194,7 @@ namespace Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("Duration")
+                    b.Property<int>("Duration")
                         .HasColumnType("int");
 
                     b.Property<bool>("Guest")
@@ -182,7 +209,7 @@ namespace Persistence.Migrations
                     b.Property<int?>("Number")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProgramId")
+                    b.Property<int>("ProgramId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ShowDate")
@@ -239,6 +266,24 @@ namespace Persistence.Migrations
                     b.ToTable("FavoriteArtists");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Live", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Lives");
+                });
+
             modelBuilder.Entity("Domain.Entities.Presenter", b =>
                 {
                     b.Property<int>("Id")
@@ -270,9 +315,6 @@ namespace Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DefaultDuration")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -299,7 +341,10 @@ namespace Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AppUserId")
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AppUserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RecordUrl")
@@ -307,7 +352,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("AppUserId1");
 
                     b.ToTable("Records");
                 });
@@ -322,43 +367,26 @@ namespace Persistence.Migrations
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Guest")
                         .HasColumnType("bit");
 
                     b.Property<string>("GuestName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProgramId")
+                    b.Property<int>("ProgramId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("ShowTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProgramId");
 
                     b.ToTable("Schedules");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ShowTime", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("FirstShowTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProgramId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProgramId");
-
-                    b.ToTable("ShowTimes");
                 });
 
             modelBuilder.Entity("Domain.Entities.Topic", b =>
@@ -514,7 +542,9 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.Program", "Program")
                         .WithMany("Episodes")
-                        .HasForeignKey("ProgramId");
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.ExternalLogin", b =>
@@ -550,20 +580,13 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.AppUser", "AppUser")
                         .WithMany("Records")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId1");
                 });
 
             modelBuilder.Entity("Domain.Entities.Schedule", b =>
                 {
                     b.HasOne("Domain.Entities.Program", "Program")
-                        .WithMany()
-                        .HasForeignKey("ProgramId");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ShowTime", b =>
-                {
-                    b.HasOne("Domain.Entities.Program", null)
-                        .WithMany("ShowTimes")
+                        .WithMany("Schedules")
                         .HasForeignKey("ProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

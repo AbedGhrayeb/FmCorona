@@ -75,10 +75,9 @@ namespace Application.Identity.Commands
                 {
                     throw new RestException(HttpStatusCode.BadRequest, new { msg = "This Email Already Token" });
                 }
-                Random random = new Random();
                 var user = new AppUser
                 {
-                    UserName = random.Next(0, 99999999).ToString(),
+                    UserName = request.Email,
                     Email = request.Email,
                     DateOfBirth = request.ParseDateOfBirth(),
                     FullName = request.FullName,

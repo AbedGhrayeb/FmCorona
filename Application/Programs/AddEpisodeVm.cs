@@ -11,7 +11,7 @@ namespace Application.Programs
         public int? Number { get; set; }
         [Required]
         public string Title { get; set; }
-        public int? Duration { get; set; }
+        public int Duration { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime ShowDate { get; set; } = DateTime.UtcNow;
         [Required]

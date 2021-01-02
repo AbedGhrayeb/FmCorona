@@ -2,9 +2,13 @@
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using Persistence;
 using System;
+using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,12 +38,23 @@ namespace Application.Programs.Commands
             public async Task<Unit> Handle(EditScheduleCommand request, CancellationToken cancellationToken)
             {
                 var program = await _context.Programs.FindAsync(request.Vm.ProgramId);
-                if (program==null)
+                if (program == null)
                 {
                     throw new RestException(HttpStatusCode.NotFound);
                 }
-                var schedule = _mapper.Map<Schedule>(request.Vm);
-                schedule.Program = program;
+                if (program.Schedules.Any(x=>x.DayOfWeek==request.Vm.DayOfWeek))
+                {
+                    throw new RestException(HttpStatusCode.BadRequest, new { msg = "You already add this day, choose another day or edit it!" });
+                }
+                var schedule = new Schedule
+                {
+                    DayOfWeek = request.Vm.DayOfWeek,
+                    ProgramId = request.Vm.ProgramId,
+                    ShowTime = request.Vm.ShowTime,
+                    Duration = request.Vm.Duration,
+                    Guest = request.Vm.Guest,
+                    GuestName = request.Vm.GuestName
+                };
                 _context.Schedules.Add(schedule);
                 var result = await _context.SaveChangesAsync() > 0;
                 if (result)

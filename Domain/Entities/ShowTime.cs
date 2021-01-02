@@ -8,10 +8,9 @@ namespace Domain.Entities
         public int Id { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
         [DataType(DataType.Time)]
-        public DateTime? FirstShowTime { get; set; }
-        public int ProgramId { get; set; }
-
-
+        public DateTime FirstShowTime { get; set; }
+        public int EpisodeId { get; set; }
+        public virtual Episode Episode { get; set; }
     }
 
 }

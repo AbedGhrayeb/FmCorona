@@ -18,10 +18,11 @@ namespace Persistence
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Presenter> Presenters { get; set; }
         public DbSet<Program> Programs { get; set; }
-        public DbSet<ShowTime> ShowTimes { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<Record> Records { get; set; }
-
+        public DbSet<Live> Lives { get; set; }
+        public DbSet<Advertising> Advertisings { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

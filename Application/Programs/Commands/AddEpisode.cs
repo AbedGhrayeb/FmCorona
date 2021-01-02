@@ -36,7 +36,7 @@ namespace Application.Programs.Commands
                 var episode = new Episode
                 {
                     Title = request.Vm.Title,
-                    Duration = request.Vm.Duration.Value,
+                    Duration = request.Vm.Duration,
                     Number = request.Vm.Number.Value,
                     Program = program,
                     ShowDate = request.Vm.ShowDate,

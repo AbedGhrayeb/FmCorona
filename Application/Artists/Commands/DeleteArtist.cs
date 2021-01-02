@@ -25,7 +25,7 @@ namespace Application.Articals.Commands
             public async Task<Unit> Handle(DeleteArtistCommand request, CancellationToken cancellationToken)
             {
 
-                var artist = await _context.Artists.Include(x => x.FavoriteArtists)
+                var artist = await _context.Artists
                     .FirstOrDefaultAsync(x => x.Id == request.Id);
                 if (artist == null)
                 {

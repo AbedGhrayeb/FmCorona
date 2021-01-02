@@ -37,7 +37,7 @@ namespace Application.Programs.Commands
                 {
                     throw new RestException(System.Net.HttpStatusCode.NotFound);
                 }
-                episode.Duration = request.Vm.Duration.Value;
+                episode.Duration = request.Vm.Duration;
                 episode.Guest = request.Vm.Guest;
                 episode.GuestName = request.Vm.GuestName ?? episode.GuestName;
                 episode.Url = _filesAccessor.ChangeFile(request.Vm.File, episode.Url, "episodes") ?? episode.Url;

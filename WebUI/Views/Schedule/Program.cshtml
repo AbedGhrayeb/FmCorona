@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Application.Programs.ProgramScheduleDto>
+
+@{
+    ViewData["Title"] = "Program Schedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.ProgramName Schedule</h2>
+
+<p>
+    <a asp-action="Create" asp-controller="Schedule" asp-route-id="@ViewBag.ProgramId" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DayOfWeek)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Presenter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GuestName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.KSA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UAE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayOfWeek)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Presenter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuestName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KSA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UAE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                <form method="post" asp-action="Delete">
+                    <input type="hidden" asp-for="@item.Id" />
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
+                    <button type="submit" asp-action="Delete" asp-route-id="@item.Id"
+                            class="btn btn-danger" onclick="return confirm('Are you sure delete this item?')">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

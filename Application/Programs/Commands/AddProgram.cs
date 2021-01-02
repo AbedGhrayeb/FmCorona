@@ -37,7 +37,6 @@ namespace Application.Programs.Commands
                 {
                     Name = request.Vm.Name,
                     Description = request.Vm.Description,
-                    DefaultDuration = request.Vm.DefaultDuration,
                     ImgUrl = _filesAccessor.UploadFile(request.Vm.Image,"programs"),
                     Presenter = presenter
                 };

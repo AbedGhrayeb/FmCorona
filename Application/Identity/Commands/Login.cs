@@ -39,7 +39,7 @@ namespace Application.Identity.Commands
             }
             public async Task<TokenResponse> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await _userManager.FindByEmailAsync(request.Email);
+                var user = await _userManager.FindByNameAsync(request.Email);
                 if (user == null)
                 {
                     throw new RestException(HttpStatusCode.BadRequest, new { msg = "خطأ في اسم المستخدم أو كلمة المرور" });

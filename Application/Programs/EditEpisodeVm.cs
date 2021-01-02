@@ -9,7 +9,7 @@ namespace Application.Programs
         public int ProgramId { get; set; }
         public int? Number { get; set; }
         public string Title { get; set; }
-        public int? Duration { get; set; }
+        public int Duration { get; set; }
         public string Url { get; set; }
         public IFormFile File { get; set; }
         public bool Guest { get; set; }

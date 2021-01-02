@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "Lives Url";
+}
+
+<h4 class="p-2 bg-primary text-white text-center">Notifications</h4>
+<div class="container-fluid mt-5">
+
+    <form method="post">
+        <div class="row p-2 text-center">
+            <div class="col-8">
+                <input id="num" name="a" type="number" class="form-control text-center" placeholder="number"required />
+            </div>
+            <div class="col-8">
+                <input id="text" name="b" type="text" class="form-control text-center" placeholder="text" required />
+            </div>
+            <div class="col">
+                <button id="send" type="submit" class="btn btn btn-primary" onclick="return sendData()">Add</button>
+            </div>
+        </div>
+    </form>
+</div>
+<hr />
+
+@section Scripts{ 
+<script type="text/javascript">
+    function sendData() {
+        var num=document.getElementById("num").value;
+        var text=document.getElementById("text").value;
+        (async () => {
+            const rawResponse = await fetch('https://httpbin.org/post', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({ a: 10, b: 'text' })
+            });
+            const content = await rawResponse.json();
+
+            console.log(content);
+        })()
+    }
+</script>
+}

@@ -33,6 +33,17 @@ namespace WebUI.API
         {
             return await Mediator.Send(command);
         }
+        
+        [AllowAnonymous]
+        [Consumes("application/json")]
+        [HttpPost("appel")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<TokenResponse> AppelLogin(AppelLogin.AppelLoginCommand command)
+        {
+            return await Mediator.Send(command);
+        }
 
         [AllowAnonymous]
         [HttpPost("register")]

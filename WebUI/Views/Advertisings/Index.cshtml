@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Application.Advertisings.AdvertisingVm>
+
+@{
+    ViewData["Title"] = "Advertising";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Advertisings</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">New Advertising</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Sponsor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Url)
+            </th>
+            <th>
+                @Html.DisplayName("Start From")
+            </th>
+            <th>
+                @Html.DisplayName("End At")
+            </th>
+            <th>
+                @Html.DisplayName("Image")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sponsor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>
+
+            <td>
+                @item.StartFrom.ToShortDateString()
+            </td>
+            <td>
+                @item.EndAt.ToShortDateString()
+            </td>
+            <td>
+                <img asp-append-version="true" alt="Advertising image" src="@item.ImgUrl" width="100" height="100" class="img-thumbnail" />
+            </td>
+            <td>
+                <form method="post" asp-action="Delete">
+                    <input type="hidden" asp-for="@item.Id" />
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
+                    <button type="submit" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"
+                            onclick="return confirm('Are you sure you want to delete this item?');">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

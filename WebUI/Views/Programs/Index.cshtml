@@ -23,9 +23,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.ImgUrl)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DefaultDuration)
-            </th>
+
             <th></th>
         </tr>
     </thead>
@@ -41,21 +39,18 @@
             <td>
                 <img asp-append-version="true" alt="program image" src="@item.ImgUrl" width="50" height="50" class="img-thumbnail" />
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DefaultDuration.Value)
-            </td>
+
             <td>
            
                 <form method="post" asp-action="Delete">
                     <input type="hidden" asp-for="@item.Id" />
                     <a asp-action="Index" asp-controller="Episodes" asp-route-id="@item.Id" class="btn btn-secondary">Episodes</a> |
-                    <a asp-action="Index" asp-controller="ShowTimes" asp-route-id="@item.Id" class="btn btn-success">Show Times</a> |
+                    <a asp-action="Program" asp-controller="Schedule" asp-route-id="@item.Id" class="btn btn-success">Show Times</a> |
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
-                    @*<button type="submit" class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id"
+                    <button type="submit" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"
                             onclick="return confirm('Are you sure you want to delete this program?');">
                         Delete
-                    </button>*@
+                    </button>
                 </form>
             </td>
         </tr>

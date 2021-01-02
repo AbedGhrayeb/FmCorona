@@ -10,21 +10,29 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="ProgramId" class="control-label">Program</label>
-                <select asp-for="ProgramId" asp-items="@ViewBag.Programs" class="form-control"></select>
-                <span asp-validation-for="ProgramId" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="ProgramId" />
+
             <div class="form-group">
                 <label asp-for="DayOfWeek" class="control-label">Day Of Week</label>
                 <select asp-for="DayOfWeek" asp-items="Html.GetEnumSelectList<DayOfWeek>()" class="form-control"></select>
                 <span asp-validation-for="DayOfWeek" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="ShowTime" class="control-label"></label>
+                <input asp-for="ShowTime" class="form-control" />
+                <span asp-validation-for="ShowTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Guest" /> @Html.DisplayNameFor(model => model.Guest)
+                    <input class="form-check-input" asp-for="Guest" /> Is there guest?
                 </label>
             </div>
             <div class="form-group">
@@ -33,7 +41,7 @@
                 <span asp-validation-for="GuestName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

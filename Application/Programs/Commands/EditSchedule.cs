@@ -39,6 +39,8 @@ namespace Application.Programs.Commands
                     throw new RestException(System.Net.HttpStatusCode.NotFound);
                 }
                 schedule.DayOfWeek = request.Vm.DayOfWeek;
+                schedule.ShowTime = request.Vm.ShowTime;
+                schedule.Duration = request.Vm.Duration;
                 schedule.Guest = request.Vm.Guest;
                 schedule.GuestName = request.Vm.GuestName;
                 schedule.Program = program;

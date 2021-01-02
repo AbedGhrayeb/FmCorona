@@ -2,7 +2,6 @@
 {
     public class WeeklyScheduleDto
     {
-        public int Id { get; set; }
         public bool Guest { get; set; }
         public string GuestName { get; set; }
         public string ProgramName { get; set; }

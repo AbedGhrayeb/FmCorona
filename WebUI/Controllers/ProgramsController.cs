@@ -67,7 +67,6 @@ namespace WebUI.Controllers
             var program = await Mediator.Send(new ProgramDetails.ProgramDetailsQuery { Id = id });
             var vm = new EditProgramVm
             {
-                DefaultDuration = program.Id,
                 Id = program.Id,
                 Description = program.Description,
                 ImgUrl = program.ImgUrl,

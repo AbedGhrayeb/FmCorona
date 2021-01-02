@@ -38,6 +38,7 @@
     <Folder Include="wwwroot\files\articls\" />
     <Folder Include="wwwroot\files\artists\" />
     <Folder Include="wwwroot\files\episodes\" />
+    <Folder Include="wwwroot\files\advertisings\" />
     <Folder Include="wwwroot\files\records\" />
     <Folder Include="wwwroot\files\presenters\" />
     <Folder Include="wwwroot\files\programs\" />

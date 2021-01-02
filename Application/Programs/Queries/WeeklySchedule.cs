@@ -1,5 +1,6 @@
 ﻿using Application.Common.Errors;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -33,7 +34,7 @@ namespace Application.Programs.Queries
             private readonly DataContext _context;
             private readonly IMapper _mapper;
 
-            public Handler(DataContext context,IMapper mapper)
+            public Handler(DataContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -43,14 +44,17 @@ namespace Application.Programs.Queries
                 var queryable = _context.Schedules.AsQueryable();
                 if (request.DayOfWeek.HasValue)
                 {
-                    queryable = queryable.Where(x => (int)x.DayOfWeek == request.DayOfWeek.Value);
+                    queryable = queryable.Where(x => (int)x.DayOfWeek == request.DayOfWeek);
+
                 }
-                var schedules = await queryable.OrderBy(x => x.Program.ShowTimes.FirstOrDefault().FirstShowTime.Value).ToListAsync();
+                IReadOnlyCollection<Schedule> schedules = await queryable.OrderBy(x => x.ShowTime).ToListAsync(); ;
+
                 var schedulesToReuren = new ScheduleEnvelope
                 {
                     ScheduleDtos = _mapper.Map<List<WeeklyScheduleDto>>(schedules)
                 };
                 return schedulesToReuren;
+
             }
         }
     }
